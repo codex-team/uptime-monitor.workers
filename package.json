@@ -1,0 +1,28 @@
+{
+  "name": "uptime-monitor.workers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "./node_modules/.bin/nodemon index.js --exec \"npm run lint && node\"",
+    "lint": "./node_modules/.bin/eslint \"./**/*.js\"",
+    "lint:fix": "./node_modules/.bin/eslint \"./**/*.js\" --fix"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.5.2",
+    "forever": "^0.15.3",
+    "mongodb": "^3.1.8",
+    "mongoose": "^5.3.8",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "eslint": "^5.8.0",
+    "eslint-config-codex": "github:codex-team/eslint-config",
+    "nodemon": "^1.18.6"
+  }
+}
