@@ -4,7 +4,7 @@ let Schema = mongoose.Schema;
 let projectSchema = new Schema({
   url: {
     type: String,
-    required: true,
+    required: true
   },
   delay: {
     type: Number,
@@ -18,14 +18,14 @@ let projectSchema = new Schema({
   },
   statusContent: Number,
   state: {
-    type: String, 
+    type: String,
     enum: ['active', 'pending', 'stopped']
   },
   active: Boolean,
   notifies: [],
   lastUpdate: { type: Date, default: Date.now },
   needCheck: Boolean
-  //owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  // owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 }, {
   timestamps: true
 });

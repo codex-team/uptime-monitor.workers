@@ -3,7 +3,6 @@ let config = require('../config');
 require('../models/project');
 let Project = mongoose.model('Project');
 
-
 const MONGO_URI = config.mongodbUri;
 
 mongoose.Promise = Promise;
@@ -13,7 +12,7 @@ let data = prepareData();
 
 mongoose.connection.once('connected', () => {
   Project.deleteMany({})
-    .then( () => {
+    .then(() => {
       return Project.insertMany(data);
     })
     .then(res => {
@@ -27,9 +26,11 @@ mongoose.connection.once('connected', () => {
     });
 
   console.log('Succesfully connected to MongoDB Database');
-
 });
 
+/**
+ * Must have
+ */
 function prepareData() {
   let res = [];
   let delays = [1000, 2000, 5000, 10000];
@@ -37,13 +38,13 @@ function prepareData() {
   let urls = ['https://github.com/search?q=', 'https://www.yandex.ru/search/?text=', 'https://www.google.ru/search?q='];
   let randomWordsArr = randomWords.split(' ');
 
-  for(let i = 0; i < 10; i++) {
+  for (let i = 0; i < 10; i++) {
     let item = {};
     item.delay = delays[getRandomInt(0, delays.length - 1)];
     item.url = urls[getRandomInt(0, urls.length - 1)];
     item.state = 'active';
     item.statusContent = -1;
-    item.notifies = ['email'];
+    item.notifies = [ 'email' ];
     item.options = {
       status: -1,
       other: 'any'
@@ -51,9 +52,9 @@ function prepareData() {
     item.needCheck = false;
     item.active = true;
 
-
-    for (let j = 0; j < 3; j++)
+    for (let j = 0; j < 3; j++) {
       item.url += randomWordsArr[getRandomInt(0, randomWordsArr.length - 1)] + '%20';
+    }
 
     res.push(item);
   }
@@ -61,7 +62,9 @@ function prepareData() {
   return res;
 }
 
-function getRandomInt(min, max)
-{
+/**
+ * Must have
+ */
+function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
