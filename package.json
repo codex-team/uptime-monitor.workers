@@ -15,8 +15,6 @@
   "dependencies": {
     "amqplib": "^0.5.2",
     "forever": "^0.15.3",
-    "mongodb": "^3.1.8",
-    "mongoose": "^5.3.8",
     "request": "^2.88.0",
     "request-promise": "^4.2.2"
   },
