@@ -1,3 +1,8 @@
+/**
+ * @file Clear database and insert random testing data.
+ * @author dyadyaJora
+ */
+
 let mongoose = require('mongoose');
 let config = require('../config');
 require('../models/project');
@@ -29,7 +34,8 @@ mongoose.connection.once('connected', () => {
 });
 
 /**
- * Must have
+ * Prepare data array for saving in db
+ * @returns {Array} Array of objects that can be saved in mongo
  */
 function prepareData() {
   let res = [];
@@ -40,6 +46,7 @@ function prepareData() {
 
   for (let i = 0; i < 10; i++) {
     let item = {};
+
     item.delay = delays[getRandomInt(0, delays.length - 1)];
     item.url = urls[getRandomInt(0, urls.length - 1)];
     item.state = 'active';
@@ -63,7 +70,10 @@ function prepareData() {
 }
 
 /**
- * Must have
+ * Generate random integer in range min-max
+ * @param {number} min
+ * @param {number} max
+ * @returns {number} random int
  */
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;

@@ -1,3 +1,8 @@
+/**
+ * @file Mongoose model "Project"
+ * @author dyadyaJora
+ */
+
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
