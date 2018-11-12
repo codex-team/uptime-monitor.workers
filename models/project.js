@@ -3,7 +3,7 @@
  * @author dyadyaJora
  */
 
-let mongoose = require('mongoose');
+const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let projectSchema = new Schema({
@@ -35,4 +35,4 @@ let projectSchema = new Schema({
   timestamps: true
 });
 
-mongoose.model('Project', projectSchema);
+module.exports = mongoose.model('Project', projectSchema);

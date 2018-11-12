@@ -3,10 +3,9 @@
  * @author dyadyaJora
  */
 
-let mongoose = require('mongoose');
+const mongoose = require('mongoose');
 let config = require('../config');
-require('../models/project');
-let Project = mongoose.model('Project');
+let Project = require('../models/project');
 
 const MONGO_URI = config.mongodbUri;
 
