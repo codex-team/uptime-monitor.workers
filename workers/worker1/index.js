@@ -45,7 +45,7 @@ amqp.connect(config.rabbitUrl)
                 channel.sendToQueue('request', Buffer.alloc(_msg.length, _msg));
                 // http.post('.../upStatus', {_id: item:_id, status: 'pending'});
                 /** TODO
-                 *  в прошлой версии при начале обработки сущности project 
+                 *  в прошлой версии при начале обработки сущности project
                  *  в цепочке воркеров - я выставлял в базу данному документу поле status: 'pending'
                  *  это гарантировало тот факт, что project повторно не будет попадать в очередь
                  *  пока наш квант времени 1 минута - этой проблемы возникать не будет, но как только

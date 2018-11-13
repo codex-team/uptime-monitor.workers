@@ -1,7 +1,7 @@
 [
 	{
 		"_id": 1,
-		"url": "https://yandex.ru",
+		"url": "http://www.ifmo.ru/ru/",
 		"delay": 60000,
 		"lastPing": "2018-11-13T09:07:58.899Z",
 		"options": {
