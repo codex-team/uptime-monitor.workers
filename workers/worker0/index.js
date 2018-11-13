@@ -3,7 +3,7 @@
  * @author dyadyaJora
  */
 
-let Worker0 = require('./worker0');
-let worker = new Worker0();
+let InitWorker = require('./worker0');
+let worker = new InitWorker();
 
 worker.start();

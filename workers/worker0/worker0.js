@@ -4,16 +4,29 @@
  */
 
 let BaseWorker = require('../base-worker');
+
+/** @constant {number} */
 const QUANT_TIME = 5000;
 
-class Worker0 extends BaseWorker {
+/** Class repesentation a InitWorker - Worker0
+ *  @class InitWorker
+ *  @extends BaseWorker
+ */
+class InitWorker extends BaseWorker {
+  /**
+   * Create a worker 0.
+   */
   constructor() {
     super();
-    this.name = 'Worker0';
+    this.name = 'InitWorker';
+    this.index = 0;
     this.queue = 'init';
   }
 
-  // @override
+  /**
+   * Run after worker started.
+   * @override
+   */
   onStarted(channel, flag) {
     // Every minute send to queue INIT any message that would started WORKER1 again and again
     setInterval(() => {
@@ -29,4 +42,4 @@ class Worker0 extends BaseWorker {
   }
 }
 
-module.exports = Worker0;
+module.exports = InitWorker;

@@ -1,8 +1,31 @@
+/**
+ * @file Describe class BaseWorker.
+ * @author dyadyaJora
+ */
+
 const amqp = require('amqplib');
 let config = require('../config');
 
-// @abstract
+/** Class repesentation a BaseWorker
+ *  @class BaseWorker
+ *  @abstract
+ */
 class BaseWorker {
+  /**
+   * Create a worker.
+   * @param {string} name - worker name.
+   * @param {number} index - workers serial number/
+   * @param {string} queue - worker queue name.
+   */
+  constructor() {
+    console.log('useless constructor');
+  }
+
+  /**
+   * Wrapper for starting each worker
+   * Create connection to amqp, create subscribers
+   * Have callback - onStarted
+   */
   start() {
     console.log(this.name + ' STARTED');
 
@@ -18,10 +41,11 @@ class BaseWorker {
       });
   }
 
-  // @virtual
-  onStarted(channel, flag) {
-
-  }
+  /**
+   * Run after worker started.
+   * @virtual
+   */
+  onStarted(channel, flag) { }
 }
 
 module.exports = BaseWorker;
