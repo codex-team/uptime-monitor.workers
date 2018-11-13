@@ -3,6 +3,11 @@
 		"_id": 1,
 		"url": "https://yandex.ru",
 		"delay": 60000,
-		"lastPing": "2018-11-13T09:07:58.899Z"
+		"lastPing": "2018-11-13T09:07:58.899Z",
+		"options": {
+			"statusContent" : 200,
+			"sizeContent": 4096,
+			"delayContent": 2222
+		}
 	}
 ]
