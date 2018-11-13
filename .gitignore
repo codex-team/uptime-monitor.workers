@@ -3,3 +3,4 @@ config/config.prod.js
 err.log
 out.log
 npm-debug*.log
+sandbox
