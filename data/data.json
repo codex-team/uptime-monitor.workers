@@ -1,0 +1,13 @@
+[
+  {
+    "_id": 1,
+    "url": "http://www.ifmo.ru/ru/",
+    "delay": 60000,
+    "lastPing": "2018-11-13T09:07:58.899Z",
+    "options": {
+      "statusContent": 200,
+      "sizeContent": 4096,
+      "delayContent": 2222
+    }
+  }
+]
