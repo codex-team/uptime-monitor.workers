@@ -47,10 +47,61 @@ class BaseWorker {
   }
 
   /**
+   * Call to RabbitMQ
+   * Assert previous queue
+   * @param {object} channel - rabbit channel
+   */
+  assertPrevQueue(channel) {
+    return channel.assertQueue(this.queuePrev);
+  }
+
+  /**
+   * Call to RabbitMQ
+   * Assert next queue
+   * @param {object} channel - rabbit channel
+   */
+  assertNextQueue(channel) {
+    return channel.assertQueue(this.queueNext);
+  }
+
+  /**
+   * Call to RabbitMQ
+   * Send message to next queue
+   * @param {object} channel - rabbit channel
+   * @param {Buffer} message - message in bytes view
+   */
+  sendToNextQueue(channel, message) {
+    return channel.sendToQueue(this.queueNext, message);
+  }
+
+  /**
+   * Call to RabbitMQ
+   * Ask message
+   * @param {object} channel - rabbit channel
+   * @param {Buffer} message - message in bytes view
+   */
+  ack(channel, message) {
+    return channel.ack(message);
+  }
+
+  /**
+   * Call to RabbitMQ
+   * Subscribe to previous queue
+   * @param {object} channel - rabbit channel
+   */
+  subscribePrev(channel, callback) {
+    return channel.consume(this.queuePrev, (msg) => {
+      callback(msg);
+      this.ack(channel, msg);
+    });
+  }
+
+  /**
    * Run after worker started.
    * @virtual
+   * @param {object} channel - rabbit channel
    */
-  onStarted(channel, flag) { }
+  onStarted(channel) { }
 }
 
 module.exports = BaseWorker;

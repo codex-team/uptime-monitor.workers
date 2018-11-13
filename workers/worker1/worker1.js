@@ -1,5 +1,5 @@
 /**
- * @file describe class for Worker 0.
+ * @file describe class for Worker 1.
  * @author dyadyaJora
  */
 
@@ -22,20 +22,27 @@ class PreRequestWorker extends BaseWorker {
   /**
    * Run after worker started.
    * @override
+   * @param {object} channel - rabbit channel
    */
-  onStarted(channel, flag) {
-    channel.assertQueue(this.prevQueue);
+  onStarted(channel) {
+    this.assertPrevQueue(channel);
     // TODO: in future for scaling
     // channel.prefetch(1);
-    channel.consume(this.prevQueue, (msg) => {
-      channel.ack(msg);
-      // ====================
-      // * DO foreach projects - check delay - create new queue
-      // ====================
-      // * channel.assertQueue(this.queue);
-      // * channel.sendToQueue(this.queue, msg);
-      // ====================
-    });
+    this.subscribePrev(channel, this._onMessageRecieve);
+  }
+
+  /**
+   * Callback on recieve message from prev queue.
+   * @param {object} msg - recieved message
+   */
+  _onMessageRecieve(msg) {
+    console.log('recieving msg callback, msg ===', msg);
+    // ====================
+    // * DO foreach projects - check delay - create new queue
+    // ====================
+    // * channel.assertQueue(this.queue);
+    // * channel.sendToQueue(this.queue, msg);
+    // ====================
   }
 }
 
