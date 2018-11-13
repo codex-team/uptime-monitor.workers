@@ -18,7 +18,6 @@ amqp.connect(config.rabbitUrl)
     // channel.prefetch(1);
     channel.consume('init', (msg) => {
       channel.ack(msg);
-      console.log(msg);
       // ====================
       // * DO foreach projects - check delay - create new queue
       // ====================
