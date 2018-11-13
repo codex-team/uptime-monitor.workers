@@ -6,7 +6,8 @@
 const amqp = require('amqplib');
 let config = require('../config');
 
-/** Class repesentation a BaseWorker
+/** 
+ *  Class repesentation a BaseWorker
  *  @class BaseWorker
  *  @abstract
  */
@@ -14,13 +15,15 @@ class BaseWorker {
   /**
    * Create a worker.
    * @param {string} name - worker name.
-   * @param {number} index - workers serial number/
-   * @param {string} queue - worker queue name.
+   * @param {number} index - workers serial number.
+   * @param {string} queuePrev - previous queue in workers chain.
+   * @param {string} queueNext - next queue in workers chain.
    */
-  constructor(name, index, queue) {
-    this.name = null;
-    this.index = null;
-    this.queue = null;
+  constructor(name, index, queuePrev, queueNext) {
+    this.name = name || null;
+    this.index = index || null;
+    this.queuePrev = queuePrev || null;
+    this.queueNext = queueNext || null
   }
 
   /**

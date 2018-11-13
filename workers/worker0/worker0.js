@@ -5,22 +5,21 @@
 
 let BaseWorker = require('../base-worker');
 
-/** @constant {number} */
+/** @constant {number} delay for first worker (each one minute)*/
 const QUANT_TIME = 5000;
 
-/** Class repesentation a InitWorker - Worker0
- *  @class InitWorker
- *  @extends BaseWorker
+/** 
+ * Class repesentation a InitWorker
+ * Worker with 0 index, start worker-chain
+ * @class InitWorker
+ * @extends BaseWorker
  */
 class InitWorker extends BaseWorker {
   /**
    * Create a worker 0.
    */
   constructor() {
-    super();
-    this.name = 'InitWorker';
-    this.index = 0;
-    this.queue = 'init';
+    super('InitWorker', 0, null, 'init');
   }
 
   /**

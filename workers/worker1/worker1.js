@@ -5,20 +5,18 @@
 
 let BaseWorker = require('../base-worker');
 
-/** Class repesentation a PreRequestWorker - Worker1
- *  @class PreRequestWorker
- *  @extends BaseWorker
+/**
+ * Class repesentation a PreRequestWorker
+ * First Worker, check lastPingTime and create queue for request
+ * @class PreRequestWorker
+ * @extends BaseWorker
  */
 class PreRequestWorker extends BaseWorker {
   /**
-   * Create a worker 0.
+   * Create a worker 1.
    */
   constructor() {
-    super();
-    this.name = 'PreRequestWorker';
-    this.index = 1;
-    this.queue = 'request';
-    this.prevQueue = 'init';
+    super('PreRequestWorker', 1, 'init', 'request');
   }
 
   /**
