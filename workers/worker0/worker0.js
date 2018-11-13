@@ -8,7 +8,7 @@ let BaseWorker = require('../base-worker');
 /** @constant {number} delay for first worker (each one minute)*/
 const QUANT_TIME = 5000;
 
-/** 
+/**
  * Class repesentation a InitWorker
  * Worker with 0 index, start worker-chain
  * @class InitWorker

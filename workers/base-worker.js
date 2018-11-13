@@ -6,7 +6,7 @@
 const amqp = require('amqplib');
 let config = require('../config');
 
-/** 
+/**
  *  Class repesentation a BaseWorker
  *  @class BaseWorker
  *  @abstract
@@ -23,7 +23,7 @@ class BaseWorker {
     this.name = name || null;
     this.index = index || null;
     this.queuePrev = queuePrev || null;
-    this.queueNext = queueNext || null
+    this.queueNext = queueNext || null;
   }
 
   /**
