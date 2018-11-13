@@ -1,5 +1,5 @@
 /**
- * @file Run Worker 0.
+ * @file Run Worker 0 / Init worker.
  * @author dyadyaJora
  */
 
