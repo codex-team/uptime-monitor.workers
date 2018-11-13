@@ -17,8 +17,10 @@ class BaseWorker {
    * @param {number} index - workers serial number/
    * @param {string} queue - worker queue name.
    */
-  constructor() {
-    console.log('useless constructor');
+  constructor(name, index, queue) {
+    this.name = null;
+    this.index = null;
+    this.queue = null;
   }
 
   /**
