@@ -10,6 +10,11 @@ let config = require('../config');
  *  Class repesentation a BaseWorker
  *  @class BaseWorker
  *  @abstract
+ *  @property {string} name - worker name.
+ *  @property {number} index - workers serial number.
+ *  @property {string} queuePrev - previous queue in workers chain.
+ *  @property {string} queueNext - next queue in workers chain.
+ *  @property {object} _channel - rabbit channel.
  */
 class BaseWorker {
   /**
@@ -39,7 +44,8 @@ class BaseWorker {
         return connection.createChannel();
       })
       .then(channel => {
-        this.onStarted(channel, 1);
+        this._channel = channel;
+        this.onStarted();
       })
       .catch(err => {
         console.log(err, 'Error in ' + this.name);
@@ -49,59 +55,60 @@ class BaseWorker {
   /**
    * Call to RabbitMQ
    * Assert previous queue
-   * @param {object} channel - rabbit channel
    */
-  assertPrevQueue(channel) {
-    return channel.assertQueue(this.queuePrev);
+  _assertPrevQueue() {
+    return this.channel.assertQueue(this.queuePrev);
   }
 
   /**
    * Call to RabbitMQ
    * Assert next queue
-   * @param {object} channel - rabbit channel
    */
-  assertNextQueue(channel) {
-    return channel.assertQueue(this.queueNext);
+  _assertNextQueue() {
+    return this.channel.assertQueue(this.queueNext);
   }
 
   /**
    * Call to RabbitMQ
    * Send message to next queue
-   * @param {object} channel - rabbit channel
    * @param {Buffer} message - message in bytes view
    */
-  sendToNextQueue(channel, message) {
-    return channel.sendToQueue(this.queueNext, message);
+  sendToNextQueue(message) {
+    return this.channel._assertNextQueue()
+      .then(() => {
+        return this.channel.sendToQueue(this.queueNext, message);
+      })
+      // TODO Error Handler
+      .catch((err) => {
+        console.log('something went wrong', err);
+      });
   }
 
   /**
    * Call to RabbitMQ
-   * Ask message
-   * @param {object} channel - rabbit channel
-   * @param {Buffer} message - message in bytes view
+   * Ask message === confirm message receive
+   * @param {object} message - Rabbit message
    */
-  ack(channel, message) {
-    return channel.ack(message);
+  ack(message) {
+    return this.channel.ack(message);
   }
 
   /**
    * Call to RabbitMQ
    * Subscribe to previous queue
-   * @param {object} channel - rabbit channel
    */
-  subscribePrev(channel, callback) {
-    return channel.consume(this.queuePrev, (msg) => {
+  subscribeToPrevQueue(callback) {
+    return this.channel.consume(this.queuePrev, (msg) => {
       callback(msg);
-      this.ack(channel, msg);
+      this.ack(msg);
     });
   }
 
   /**
    * Run after worker started.
    * @virtual
-   * @param {object} channel - rabbit channel
    */
-  onStarted(channel) { }
+  onStarted() { }
 }
 
 module.exports = BaseWorker;

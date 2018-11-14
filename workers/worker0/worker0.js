@@ -25,19 +25,11 @@ class InitWorker extends BaseWorker {
   /**
    * Run after worker started.
    * @override
-   * @param {object} channel - rabbit channel
    */
-  onStarted(channel) {
+  onStarted() {
     // Every minute send to queue INIT any message that would started WORKER1 again and again
     setInterval(() => {
-      this.assertNextQueue(channel)
-        .then(() => {
-          return this.sendToNextQueue(channel, Buffer.from('1'));
-        })
-        .catch((err) => {
-          console.log('something went wrong', err);
-          // TODO Error handler
-        });
+      this.sendToNextQueue(Buffer.from('1'));
     }, QUANT_TIME);
   }
 }
