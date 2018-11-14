@@ -3,7 +3,7 @@
  * @author dyadyaJora
  */
 
-const amqp = require('amqplib');
+const request = require('request-promise');
 let config = require('../config');
 
 /**
@@ -12,103 +12,70 @@ let config = require('../config');
  *  @abstract
  *  @property {string} name - worker name.
  *  @property {number} index - workers serial number.
- *  @property {string} queuePrev - previous queue in workers chain.
- *  @property {string} queueNext - next queue in workers chain.
- *  @property {object} _channel - rabbit channel.
  */
 class BaseWorker {
   /**
    * Create a worker.
    * @param {string} name - worker name.
    * @param {number} index - workers serial number.
-   * @param {string} queuePrev - previous queue in workers chain.
-   * @param {string} queueNext - next queue in workers chain.
    */
-  constructor(name, index, queuePrev, queueNext) {
+  constructor(name, index) {
     this.name = name || null;
     this.index = index || null;
-    this.queuePrev = queuePrev || null;
-    this.queueNext = queueNext || null;
   }
 
   /**
    * Wrapper for starting each worker
-   * Create connection to amqp, create subscribers
-   * Have callback - onStarted
    */
   start() {
-    console.log(this.name + ' STARTED');
-
-    amqp.connect(config.rabbitUrl)
-      .then(connection => {
-        return connection.createChannel();
+    console.log('Worker ' + this.name + ' [' + this.index + ']' + ' started');
+    this.popTask()
+      .then((data) => {
+        return this.operate(data);
       })
-      .then(channel => {
-        this._channel = channel;
-        this.onStarted();
-      })
-      .catch(err => {
-        console.log(err, 'Error in ' + this.name);
-      });
-  }
-
-  /**
-   * Call to RabbitMQ
-   * Assert previous queue
-   */
-  _assertPrevQueue() {
-    return this.channel.assertQueue(this.queuePrev);
-  }
-
-  /**
-   * Call to RabbitMQ
-   * Assert next queue
-   */
-  _assertNextQueue() {
-    return this.channel.assertQueue(this.queueNext);
-  }
-
-  /**
-   * Call to RabbitMQ
-   * Send message to next queue
-   * @param {Buffer} message - message in bytes view
-   */
-  sendToNextQueue(message) {
-    return this.channel._assertNextQueue()
       .then(() => {
-        return this.channel.sendToQueue(this.queueNext, message);
+        this.start(); // recursion
       })
-      // TODO Error Handler
       .catch((err) => {
-        console.log('something went wrong', err);
+        console.log('smth went wrong', err);
       });
   }
 
   /**
-   * Call to RabbitMQ
-   * Ask message === confirm message receive
-   * @param {object} message - Rabbit message
+   * Call api for adding task in queue
+   * @param {number} worker - worker index
+   * @param {object} options
    */
-  ack(message) {
-    return this.channel.ack(message);
-  }
-
-  /**
-   * Call to RabbitMQ
-   * Subscribe to previous queue
-   */
-  subscribeToPrevQueue(callback) {
-    return this.channel.consume(this.queuePrev, (msg) => {
-      callback(msg);
-      this.ack(msg);
+  addTask(worker, options) {
+    request({
+      method: 'POST',
+      uri: config.registryUrl.addTask,
+      body: {
+        worker: worker,
+        options: options
+      }
     });
   }
 
   /**
-   * Run after worker started.
-   * @virtual
+   * Call api for pop task from queue
+   * @param {object} options
    */
-  onStarted() { }
+  popTask(options) {
+    return request({
+      uri: config.registryUrl.getTask,
+      qs: {
+        worker: this.index
+      }
+    });
+  }
+
+  /**
+   * Make some work.
+   * @virtual
+   * @param {object} data
+   */
+  operate(data) { }
 }
 
 module.exports = BaseWorker;
