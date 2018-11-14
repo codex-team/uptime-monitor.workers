@@ -81,7 +81,7 @@ class ResponseWorker extends BaseWorker {
       });
     }
 
-    return  new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       resolve();
     });
   }
