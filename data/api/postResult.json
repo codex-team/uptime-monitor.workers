@@ -1,0 +1,9 @@
+{
+	"_id": 1,
+	"lastPing": "2018-11-13T09:07:58.899Z",
+	"options": {
+      "statusContent": 200,
+      "sizeContent": 10000,
+      "delayContent": 50
+    },
+}

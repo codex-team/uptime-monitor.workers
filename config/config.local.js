@@ -6,11 +6,11 @@ module.exports = {
   rabbitPort: 5672,
   rabbitUrl: 'amqp://localhost',
   apiUrl: {
-    getAll: '',
-    postResult: ''
+    getAll: '' || 'http://localhost:8080/api/getAll.json',
+    postResult: '' || 'http://localhost:8080/api/postResult.json'
   },
   registryUrl: {
-    getTask: '',
-    addTask: ''
+    getTask: '' || 'http://localhost:8080/registry/getTask.json',
+    addTask: '' || 'http://localhost:8080/registry/postTask.json'
   }
 };
