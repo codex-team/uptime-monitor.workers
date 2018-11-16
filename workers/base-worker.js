@@ -37,6 +37,7 @@ class BaseWorker {
         this.start(); // recursion
       })
       .catch((err) => {
+        this.start(); // try again
         console.log('smth went wrong', err);
       });
   }
@@ -47,13 +48,14 @@ class BaseWorker {
    * @param {object} options
    */
   addTask(worker, options) {
+    console.log('REQUEST from worker' + worker + ', with options ' + JSON.stringify(options));
     request({
       method: 'POST',
       uri: config.registryUrl.addTask,
-      body: {
+      body: JSON.stringify({
         worker: worker,
         options: options
-      }
+      })
     });
   }
 

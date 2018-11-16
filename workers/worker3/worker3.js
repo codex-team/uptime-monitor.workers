@@ -23,6 +23,8 @@ class ResponseWorker extends BaseWorker {
    * @override
    */
   operate(data) {
+    data = JSON.parse(data);
+    
     let item = {
       _id: data._id,
       url: data.url,
@@ -33,7 +35,7 @@ class ResponseWorker extends BaseWorker {
     let alarmInfo = {};
     let needAlarm = false;
 
-    // TODO request statistic? request&parse content? other fitures ...
+    // TODO request statistic? request&parse content? other features ...
 
     alarmInfo.lastPing = (new Date()).toISOString(); // TODO
 

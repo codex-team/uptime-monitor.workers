@@ -31,11 +31,13 @@ class PreRequestWorker extends BaseWorker {
           throw new Error('apiUrl getAll return XpeHb');
         }
 
+        res = JSON.parse(res);
         res.forEach((item) => {
           if (this._needPingNow(item)) {
             let newMsg = {
               _id: item._id,
               url: item.url
+              // TODO option ARGUMENTS !!!!!
             };
 
             this.addTask(this.index + 1, newMsg);

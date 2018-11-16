@@ -25,6 +25,7 @@ class RequestWorker extends BaseWorker {
    * @override
    */
   operate(data) {
+    data = JSON.parse(data);
     let client = (data.url.indexOf('https') === 0) ? https : http;
     let _msg = {
       _id: data._id,
