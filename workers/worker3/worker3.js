@@ -24,7 +24,7 @@ class ResponseWorker extends BaseWorker {
    */
   operate(data) {
     data = JSON.parse(data);
-    
+
     let item = {
       _id: data._id,
       url: data.url,

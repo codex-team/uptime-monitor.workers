@@ -4,6 +4,7 @@
  */
 
 const request = require('request-promise');
+const crypto = require('crypto');
 let config = require('../config');
 
 /**
@@ -12,6 +13,7 @@ let config = require('../config');
  *  @abstract
  *  @property {string} name - worker name.
  *  @property {number} index - workers serial number.
+ *  @property {string} hash - unique random hash.
  */
 class BaseWorker {
   /**
@@ -22,6 +24,7 @@ class BaseWorker {
   constructor(name, index) {
     this.name = name || null;
     this.index = index || null;
+    this.hash = this._generateHash();
   }
 
   /**
@@ -78,6 +81,14 @@ class BaseWorker {
    * @param {object} data
    */
   operate(data) { }
+
+  /**
+   * Generating random hash
+   * @returns {string}
+   */
+  _generateHash() {
+    return crypto.randomBytes(16).toString('hex');
+  }
 }
 
 module.exports = BaseWorker;
