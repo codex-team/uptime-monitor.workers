@@ -23,6 +23,13 @@ class RequestWorker extends BaseWorker {
 
   /**
    * @override
+   * @param {object} data
+   * @param {string} data._id - project ID
+   * @param {string} data.url - project url
+   * @param {object} data.options - project options
+   * @param {number} data.options.statusContent
+   * @param {number} data.options.sizeContent
+   * @param {number} data.options.delayContent
    */
   operate(data) {
     data = JSON.parse(data);
@@ -58,7 +65,7 @@ class RequestWorker extends BaseWorker {
               delayContent: time
             };
 
-            this.addTask(this.index + 1, _msg);
+            this.addTask('ResponseWorker', _msg);
             resolve();
           });
         })

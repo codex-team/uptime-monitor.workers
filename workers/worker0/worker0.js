@@ -30,7 +30,7 @@ class InitWorker extends BaseWorker {
     console.log('Worker [0] started');
     // Every minute send to queue INIT any message that would started WORKER1 again and again
     setInterval(() => {
-      this.addTask(this.index + 1, {
+      this.addTask('PreRequestWorker', {
         needPing: true
       });
     }, QUANT_TIME);

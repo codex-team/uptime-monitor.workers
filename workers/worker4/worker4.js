@@ -22,6 +22,19 @@ class NotifyWorker extends BaseWorker {
 
   /**
    * @override
+   * @param {object} data
+   * @param {string} data._id - project ID
+   * @param {string} data.url - project url
+   * @param {object} data.options - old project options
+   * @param {number} data.options.statusContent
+   * @param {number} data.options.sizeContent
+   * @param {number} data.options.delayContent
+   * @param {object} data.options - new received project options
+   * @param {number} data.newOptions.statusContent
+   * @param {number} data.newOptions.sizeContent
+   * @param {number} data.newOptions.delayContent
+   * @param {Array} data.notify - array with notify endpoints // TODO
+   * @param {string} data.lastPing - last ping ISO time
    */
   operate(data) {
     let temp;

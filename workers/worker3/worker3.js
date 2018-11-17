@@ -21,6 +21,18 @@ class ResponseWorker extends BaseWorker {
 
   /**
    * @override
+   * @param {object} data
+   * @param {string} data._id - project ID
+   * @param {string} data.url - project url
+   * @param {object} data.options - old project options
+   * @param {number} data.options.statusContent
+   * @param {number} data.options.sizeContent
+   * @param {number} data.options.delayContent
+   * @param {object} data.options - new received project options
+   * @param {number} data.newOptions.statusContent
+   * @param {number} data.newOptions.sizeContent
+   * @param {number} data.newOptions.delayContent
+   * @param {Array} data.notify - array with notify endpoints // TODO
    */
   operate(data) {
     data = JSON.parse(data);
@@ -39,6 +51,7 @@ class ResponseWorker extends BaseWorker {
 
     alarmInfo.lastPing = (new Date()).toISOString(); // TODO
 
+    // Inspect response status for changes
     if (item.options.statusContent != item.newOptions.statusContent) {
       needAlarm = true;
 
@@ -48,6 +61,7 @@ class ResponseWorker extends BaseWorker {
       };
     }
 
+    // Inspect response size for changes
     if (item.options.sizeContent != item.newOptions.sizeContent) {
       needAlarm = true;
 
@@ -57,6 +71,7 @@ class ResponseWorker extends BaseWorker {
       };
     }
 
+    // Inspect response delay for changes
     if (item.options.delayContent != item.newOptions.delayContent) {
       needAlarm = true;
 
@@ -66,16 +81,18 @@ class ResponseWorker extends BaseWorker {
       };
     }
 
-    this.addTask(this.index + 1, {
+    // Send ping result to api(anyway)
+    this.addTask('NotifyWorker', {
       type: 'api',
       data: alarmInfo
     });
 
+    // Send notify, if ping result has changes from prev
     if (needAlarm) {
       let message = this._generateAlarmMessge(alarmInfo);
 
       item.notify.forEach((noty) => {
-        this.addTask(this.index + 1, {
+        this.addTask('NotifyWorker', {
           type: noty.type,
           credentianls: noty, // TODO
           message: message

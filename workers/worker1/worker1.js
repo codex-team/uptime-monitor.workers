@@ -23,6 +23,7 @@ class PreRequestWorker extends BaseWorker {
 
   /**
    * @override
+   * @param {object} data
    */
   operate(data) {
     return request.get(config.apiUrl.getAll)
@@ -40,7 +41,7 @@ class PreRequestWorker extends BaseWorker {
               // TODO option ARGUMENTS !!!!!
             };
 
-            this.addTask(this.index + 1, newMsg);
+            this.addTask('RequestWorker', newMsg);
             // http.post('.../upStatus', {_id: item:_id, status: 'pending'});
             /** TODO (notCritical)
              *  в прошлой версии при начале обработки сущности project

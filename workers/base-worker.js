@@ -47,7 +47,7 @@ class BaseWorker {
 
   /**
    * Call api for adding task in queue
-   * @param {number} worker - worker index
+   * @param {string} worker - worker name
    * @param {object} options
    */
   addTask(worker, options) {
@@ -76,7 +76,8 @@ class BaseWorker {
   }
 
   /**
-   * Make some work.
+   * Make some work every tick
+   * Must be overrided in children
    * @virtual
    * @param {object} data
    */
