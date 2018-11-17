@@ -20,6 +20,8 @@ class ResponseWorker extends BaseWorker {
   }
 
   /**
+   * Make some work every tick
+   * Parse responce result, find diff with prev result
    * @override
    * @param {object} data
    * @param {string} data._id - project ID

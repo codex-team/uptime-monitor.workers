@@ -21,6 +21,8 @@ class RequestWorker extends BaseWorker {
   }
 
   /**
+   * Make some work every tick
+   * Make http(s) request
    * @override
    * @param {object} data
    * @param {string} data._id - project ID

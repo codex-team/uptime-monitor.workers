@@ -21,6 +21,8 @@ class PreRequestWorker extends BaseWorker {
   }
 
   /**
+   * Make some work every tick
+   * Check lastPing time and current time. Generate queue for request
    * @override
    * @param {object} data
    */

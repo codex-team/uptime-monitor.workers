@@ -21,6 +21,8 @@ class NotifyWorker extends BaseWorker {
   }
 
   /**
+   * Make some work every tick
+   * Send ping result to api OR send alarm-notify
    * @override
    * @param {object} data
    * @param {string} data._id - project ID
