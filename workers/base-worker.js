@@ -13,7 +13,7 @@ let config = require('../config');
  *  @abstract
  *  @property {string} name - worker name.
  *  @property {number} index - workers serial number.
- *  @property {string} hash - unique random hash.
+ *  @property {string} hash - unique random hash to identify workers instances.
  */
 class BaseWorker {
   /**
