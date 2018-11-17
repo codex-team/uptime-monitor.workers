@@ -1,5 +1,5 @@
 /**
- * @file describe class for Worker 4.
+ * @file describe class for NotifyWorker.
  */
 
 const request = require('request');
@@ -8,16 +8,16 @@ let config = require('../../config');
 
 /**
  * Class repesentation a NotifyWorker
- * Worker 4, Make notify
+ * Worker for make notify
  * @class RequestWorker
  * @extends BaseWorker
  */
 class NotifyWorker extends BaseWorker {
   /**
-   * Create a worker 4.
+   * Create a worker.
    */
   constructor() {
-    super('NotifyWorker', 4);
+    super('NotifyWorker');
   }
 
   /**

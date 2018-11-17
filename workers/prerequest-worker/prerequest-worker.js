@@ -1,6 +1,5 @@
 /**
- * @file describe class for Worker 1.
- * @author dyadyaJora
+ * @file describe class for PreRequestWorker.
  */
 
 const request = require('request-promise');
@@ -15,10 +14,10 @@ let config = require('../../config');
  */
 class PreRequestWorker extends BaseWorker {
   /**
-   * Create a worker 1.
+   * Create a worker.
    */
   constructor() {
-    super('PreRequestWorker', 1);
+    super('PreRequestWorker');
   }
 
   /**

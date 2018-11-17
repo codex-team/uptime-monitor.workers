@@ -1,6 +1,5 @@
 /**
- * @file describe class for Worker 0.
- * @author dyadyaJora
+ * @file describe class for InitWorker.
  */
 
 let BaseWorker = require('../base-worker');
@@ -10,16 +9,16 @@ const QUANT_TIME = 5000;
 
 /**
  * Class repesentation a InitWorker
- * Worker with 0 index, start worker-chain
+ * Start worker-chain
  * @class InitWorker
  * @extends BaseWorker
  */
 class InitWorker extends BaseWorker {
   /**
-   * Create a worker 0.
+   * Create a worker.
    */
   constructor() {
-    super('InitWorker', 0);
+    super('InitWorker');
   }
 
   /**

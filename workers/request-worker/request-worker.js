@@ -1,6 +1,5 @@
 /**
- * @file describe class for Worker 2.
- * @author dyadyaJora
+ * @file describe class for RequestWorker.
  */
 
 const http = require('http');
@@ -15,10 +14,10 @@ let BaseWorker = require('../base-worker');
  */
 class RequestWorker extends BaseWorker {
   /**
-   * Create a worker 2.
+   * Create a worker RequestWorker.
    */
   constructor() {
-    super('RequestWorker', 2);
+    super('RequestWorker');
   }
 
   /**

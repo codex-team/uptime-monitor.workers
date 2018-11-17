@@ -12,18 +12,15 @@ let config = require('../config');
  *  @class BaseWorker
  *  @abstract
  *  @property {string} name - worker name.
- *  @property {number} index - workers serial number.
  *  @property {string} hash - unique random hash to identify workers instances.
  */
 class BaseWorker {
   /**
    * Create a worker.
    * @param {string} name - worker name.
-   * @param {number} index - workers serial number.
    */
-  constructor(name, index) {
+  constructor(name) {
     this.name = name || null;
-    this.index = index || null;
     this.hash = this._generateHash();
   }
 
@@ -31,7 +28,7 @@ class BaseWorker {
    * Wrapper for starting each worker
    */
   start() {
-    console.log('Worker ' + this.name + ' [' + this.index + ']' + ' started');
+    console.log('Worker ' + this.name + ' started');
     this.popTask()
       .then((data) => {
         return this.operate(data);

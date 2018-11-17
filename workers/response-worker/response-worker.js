@@ -1,22 +1,22 @@
 /**
- * @file describe class for Worker 3.
+ * @file describe class for ResponseWorker.
  */
 
 let BaseWorker = require('../base-worker');
 
 /**
  * Class repesentation a ResponseWorker
- * Worker 3, Parse response(in future 'hard' parsing with statistics and etc)
+ * Worker for Parse response(in future 'hard' parsing with statistics and etc)
  * Create queue for Notify
  * @class RequestWorker
  * @extends BaseWorker
  */
 class ResponseWorker extends BaseWorker {
   /**
-   * Create a worker 3.
+   * Create a worker.
    */
   constructor() {
-    super('ResponseWorker', 3);
+    super('ResponseWorker');
   }
 
   /**
