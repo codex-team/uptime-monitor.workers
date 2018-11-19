@@ -2,7 +2,7 @@
  * @file describe class for NotifyWorker.
  */
 
-const request = require('request');
+const request = require('request-promise');
 let BaseWorker = require('../base-worker');
 let config = require('../../config');
 
@@ -35,35 +35,45 @@ class NotifyWorker extends BaseWorker {
    * @param {number} data.newOptions.statusContent
    * @param {number} data.newOptions.sizeContent
    * @param {number} data.newOptions.delayContent
-   * @param {Array} data.notify - array with notify endpoints // TODO
+   * @param {Array} data.notification - array with notify endpoints // @todo
    * @param {string} data.lastPing - last ping ISO time
    */
   operate(data) {
-    let temp;
+    let resultCall;
+
+    console.log('dooing task = ' + data.type);
 
     switch (data.type) {
       case 'api':
-        request({
+        resultCall = request({
           method: 'POST',
-          url: config.api.postResult,
-          body: JSON.parse({
+          url: config.apiUrl.postResult,
+          body: {
             _id: data._id,
             url: data.url,
             lastPing: data.lastPing,
             newOptions: {
-              statusContent: data.newOptions.statusContent,
-              sizeContent: data.newOptions.sizeContent,
-              delayContent: data.newOptions.delayContent
+              statusContent: data.newOptions && data.newOptions.statusContent,
+              sizeContent: data.newOptions && data.newOptions.sizeContent,
+              delayContent: data.newOptions && data.newOptions.delayContent
             }
-          })
+          },
+          json: true
+        });
+        break;
+      case 'testhook':
+        resultCall = request({
+          method: 'POST',
+          uri: config.testhookUrl,
+          form: {
+            message: data.message
+          }
         });
         break;
       case 'other':
         break;
     }
-    return new Promise((resolve, reject) => {
-      resolve();
-    });
+    return resultCall;
   }
 }
 

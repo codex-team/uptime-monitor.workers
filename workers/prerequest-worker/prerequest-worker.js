@@ -38,8 +38,10 @@ class PreRequestWorker extends BaseWorker {
           if (this._needPingNow(item)) {
             let newMsg = {
               _id: item._id,
-              url: item.url
-              // TODO option ARGUMENTS !!!!!
+              url: item.url,
+              options: item.options || {},
+              notifications: item.notifications || []
+              // @todo option ARGUMENTS !!!!!
             };
 
             this.addTask('RequestWorker', newMsg);
