@@ -31,8 +31,9 @@ class BaseWorker {
     console.log('Worker ' + this.name + ' started');
     this.popTask()
       .then((data) => {
-        if (data.statusCode == 200) {
-          return this.operate(data.body);
+        console.log('task given');
+        if (data.statusCode == 200 && data.body['task']) {
+          return this.operate(data.body.task);
         }
 
         return new Promise((resolve, reject) => {
@@ -48,7 +49,7 @@ class BaseWorker {
       })
       .catch((err) => {
         this.start(); // try again
-        console.log('smth went wrong', err);
+        console.log('smth went wrong', err, 'BASE ERRORHANDLER');
       });
   }
 
@@ -62,10 +63,7 @@ class BaseWorker {
     request({
       method: 'PUT',
       uri: config.registryUrl.addTask + worker,
-      body: {
-        worker: worker,
-        options: options
-      },
+      body: options,
       json: true,
       resolveWithFullResponse: true
     });

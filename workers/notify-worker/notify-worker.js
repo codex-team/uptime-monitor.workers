@@ -2,7 +2,7 @@
  * @file describe class for NotifyWorker.
  */
 
-const request = require('request');
+const request = require('request-promise');
 let BaseWorker = require('../base-worker');
 let config = require('../../config');
 
@@ -41,22 +41,33 @@ class NotifyWorker extends BaseWorker {
   operate(data) {
     let temp;
 
+    console.log('dooing task = ' + data.type);
+
     switch (data.type) {
       case 'api':
         request({
           method: 'POST',
-          url: config.api.postResult,
+          url: config.apiUrl.postResult,
           body: {
             _id: data._id,
             url: data.url,
             lastPing: data.lastPing,
             newOptions: {
-              statusContent: data.newOptions.statusContent,
-              sizeContent: data.newOptions.sizeContent,
-              delayContent: data.newOptions.delayContent
+              statusContent: data.newOptions && data.newOptions.statusContent,
+              sizeContent: data.newOptions && data.newOptions.sizeContent,
+              delayContent: data.newOptions && data.newOptions.delayContent
             }
           },
           json: true
+        });
+        break;
+      case 'testhook':
+        request({
+          method: 'POST',
+          uri: config.testhookUrl,
+          form: {
+            message: data.message
+          }
         });
         break;
       case 'other':

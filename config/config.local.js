@@ -5,6 +5,7 @@ module.exports = {
   mongodbUri: 'mongodb://localhost/uptime-monitor',
   rabbitPort: 5672,
   rabbitUrl: 'amqp://localhost',
+  testhookUrl: 'https://notify.bot.ifmo.su/u/97MQ4RE1',
   apiUrl: {
     getAll: '' || 'http://localhost:8080/api/getAll.json',
     postResult: '' || 'http://localhost:8080/api/postResult.json'

@@ -37,7 +37,7 @@ class ResponseWorker extends BaseWorker {
    * @param {Array} data.notify - array with notify endpoints // TODO
    */
   operate(data) {
-    data = JSON.parse(data);
+    console.log(data, '====');
 
     let item = {
       _id: data._id,
@@ -53,8 +53,18 @@ class ResponseWorker extends BaseWorker {
 
     alarmInfo.lastPing = (new Date()).toISOString(); // TODO
 
+    // HARDCODE
+    // if (item.newOptions.statusContent !== 200) {
+    //   needAlarm = true;
+
+    //   alarmInfo['statusContent'] = {
+    //     prev: 200,
+    //     current: item.newOptions.statusContent
+    //   };
+    // }
+
     // Inspect response status for changes
-    if (item.options.statusContent != item.newOptions.statusContent) {
+    if (item.options.statusContent && item.options.statusContent != item.newOptions.statusContent) {
       needAlarm = true;
 
       alarmInfo['statusContent'] = {
@@ -64,7 +74,7 @@ class ResponseWorker extends BaseWorker {
     }
 
     // Inspect response size for changes
-    if (item.options.sizeContent != item.newOptions.sizeContent) {
+    if (item.options.sizeContent && item.options.sizeContent != item.newOptions.sizeContent) {
       needAlarm = true;
 
       alarmInfo['sizeContent'] = {
@@ -74,7 +84,7 @@ class ResponseWorker extends BaseWorker {
     }
 
     // Inspect response delay for changes
-    if (item.options.delayContent != item.newOptions.delayContent) {
+    if (item.options.delayContent && item.options.delayContent != item.newOptions.delayContent) {
       needAlarm = true;
 
       alarmInfo['delayContent'] = {
@@ -93,10 +103,16 @@ class ResponseWorker extends BaseWorker {
     if (needAlarm) {
       let message = this._generateAlarmMessge(alarmInfo);
 
+      // TODO rm hardcode
+      item.notify.push({
+        type: 'testhook',
+        message: message
+      });
+
       item.notify.forEach((noty) => {
         this.addTask('NotifyWorker', {
           type: noty.type,
-          credentianls: noty, // TODO
+          // credentianls: noty, // TODO
           message: message
         });
       });
@@ -113,7 +129,7 @@ class ResponseWorker extends BaseWorker {
    * @returns {string}
    */
   _generateAlarmMessge(alarmInfo) {
-    let str = 'INFO\n' + alarmInfo.lastPing + '\n';
+    let str = '\u203C INFO \u203c\n' + alarmInfo.lastPing + '\n';
 
     Object.keys(alarmInfo).forEach((key) => {
       if (key != 'lastPing') {

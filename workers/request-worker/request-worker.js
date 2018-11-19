@@ -33,15 +33,19 @@ class RequestWorker extends BaseWorker {
    * @param {number} data.options.delayContent
    */
   operate(data) {
-    data = JSON.parse(data);
-    let client = (data.url.indexOf('https') === 0) ? https : http;
-    let _msg = {
-      _id: data._id,
-      url: data.url,
-      options: data.options
-    };
-
     return new Promise((resolve, reject) => {
+      if (!data.url) {
+        reject(new Error('No url in data object'));
+      }
+
+      let client = (data.url.indexOf('https') === 0) ? https : http;
+      let _msg = {
+        _id: data._id,
+        url: data.url,
+        options: data.options,
+        notify: data.notify
+      };
+
       // Request project
       client.get(_msg.url)
         .on('response', (res) => {
