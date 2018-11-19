@@ -35,7 +35,7 @@ class NotifyWorker extends BaseWorker {
    * @param {number} data.newOptions.statusContent
    * @param {number} data.newOptions.sizeContent
    * @param {number} data.newOptions.delayContent
-   * @param {Array} data.notify - array with notify endpoints // TODO
+   * @param {Array} data.notification - array with notify endpoints // @todo
    * @param {string} data.lastPing - last ping ISO time
    */
   operate(data) {

@@ -40,8 +40,8 @@ class PreRequestWorker extends BaseWorker {
               _id: item._id,
               url: item.url,
               options: item.options || {},
-              notify: item.notify || []
-              // TODO option ARGUMENTS !!!!!
+              notifications: item.notifications || []
+              // @todo option ARGUMENTS !!!!!
             };
 
             this.addTask('RequestWorker', newMsg);

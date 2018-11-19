@@ -31,6 +31,7 @@ class RequestWorker extends BaseWorker {
    * @param {number} data.options.statusContent
    * @param {number} data.options.sizeContent
    * @param {number} data.options.delayContent
+   * @param {Array} data.notifications - project options
    */
   operate(data) {
     return new Promise((resolve, reject) => {
@@ -43,17 +44,16 @@ class RequestWorker extends BaseWorker {
         _id: data._id,
         url: data.url,
         options: data.options,
-        notify: data.notify
+        notifications: data.notifications
       };
 
       // Request project
       client.get(_msg.url)
         .on('response', (res) => {
           let body = '';
-          let time = 0;
-          let timerId = setInterval(() => {
-            time++;
-          }, 1);
+          let startTime = (new Date()).getTime();
+          let endTime;
+          let time;
 
           res.on('data', (bodyData) => {
             body += bodyData;
@@ -61,7 +61,8 @@ class RequestWorker extends BaseWorker {
 
           res.on('end', () => {
             // On request complete
-            clearInterval(timerId);
+            endTime = (new Date()).getTime();
+            time = endTime - startTime;
             console.log(_msg.url, res.statusCode, time, body.length, '=======');
 
             _msg.newOptions = {

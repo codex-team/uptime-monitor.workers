@@ -34,7 +34,7 @@ class ResponseWorker extends BaseWorker {
    * @param {number} data.newOptions.statusContent
    * @param {number} data.newOptions.sizeContent
    * @param {number} data.newOptions.delayContent
-   * @param {Array} data.notify - array with notify endpoints // TODO
+   * @param {Array} data.notifications - array with notifications endpoints //  @todo
    */
   operate(data) {
     console.log(data, '====');
@@ -44,14 +44,14 @@ class ResponseWorker extends BaseWorker {
       url: data.url,
       options: data.options,
       newOptions: data.newOptions,
-      notify: data.notify
+      notifications: data.notifications
     };
     let alarmInfo = {};
     let needAlarm = false;
 
-    // TODO request statistic? request&parse content? other features ...
+    // @todo request statistic? request&parse content? other features ...
 
-    alarmInfo.lastPing = (new Date()).toISOString(); // TODO
+    alarmInfo.lastPing = (new Date()).toISOString(); //  @todo
 
     // HARDCODE
     // if (item.newOptions.statusContent !== 200) {
@@ -99,20 +99,20 @@ class ResponseWorker extends BaseWorker {
       data: alarmInfo
     });
 
-    // Send notify, if ping result has changes from prev
+    // Send notifications, if ping result has changes from prev
     if (needAlarm) {
       let message = this._generateAlarmMessge(alarmInfo);
 
-      // TODO rm hardcode
-      item.notify.push({
+      // @todo rm hardcode
+      item.notifications.push({
         type: 'testhook',
         message: message
       });
 
-      item.notify.forEach((noty) => {
+      item.notifications.forEach((noty) => {
         this.addTask('NotifyWorker', {
           type: noty.type,
-          // credentianls: noty, // TODO
+          // credentianls: noty, // @todo
           message: message
         });
       });
@@ -124,8 +124,8 @@ class ResponseWorker extends BaseWorker {
   }
 
   /**
-   * Generate message for notify
-   * @param {object} alarmInfo // TODO
+   * Generate message for notifications
+   * @param {object} alarmInfo //  @todo
    * @returns {string}
    */
   _generateAlarmMessge(alarmInfo) {
