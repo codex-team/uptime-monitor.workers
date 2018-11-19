@@ -39,13 +39,13 @@ class NotifyWorker extends BaseWorker {
    * @param {string} data.lastPing - last ping ISO time
    */
   operate(data) {
-    let temp;
+    let resultCall;
 
     console.log('dooing task = ' + data.type);
 
     switch (data.type) {
       case 'api':
-        request({
+        resultCall = request({
           method: 'POST',
           url: config.apiUrl.postResult,
           body: {
@@ -62,7 +62,7 @@ class NotifyWorker extends BaseWorker {
         });
         break;
       case 'testhook':
-        request({
+        resultCall = request({
           method: 'POST',
           uri: config.testhookUrl,
           form: {
@@ -73,9 +73,7 @@ class NotifyWorker extends BaseWorker {
       case 'other':
         break;
     }
-    return new Promise((resolve, reject) => {
-      resolve();
-    });
+    return resultCall;
   }
 }
 
