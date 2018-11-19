@@ -1,4 +1,5 @@
 module.exports = {
+  quantTime: 60000,
   httpType: 'http',
   baseHost: 'localhost',
   webPort: 3002,
