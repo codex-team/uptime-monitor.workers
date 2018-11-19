@@ -31,7 +31,17 @@ class BaseWorker {
     console.log('Worker ' + this.name + ' started');
     this.popTask()
       .then((data) => {
-        return this.operate(data);
+        if (data.statusCode == 200) {
+          return this.operate(data.body);
+        }
+
+        return new Promise((resolve, reject) => {
+          if (data.statusCode >= 500) {
+            reject(new Error('Error with registry'));
+          } else {
+            resolve();
+          }
+        });
       })
       .then(() => {
         this.start(); // recursion
@@ -50,12 +60,14 @@ class BaseWorker {
   addTask(worker, options) {
     console.log('REQUEST from worker' + worker + ', with options ' + JSON.stringify(options));
     request({
-      method: 'POST',
-      uri: config.registryUrl.addTask,
-      body: JSON.stringify({
+      method: 'PUT',
+      uri: config.registryUrl.addTask + worker,
+      body: {
         worker: worker,
         options: options
-      })
+      },
+      json: true,
+      resolveWithFullResponse: true
     });
   }
 
@@ -65,10 +77,9 @@ class BaseWorker {
    */
   popTask(options) {
     return request({
-      uri: config.registryUrl.getTask,
-      qs: {
-        worker: this.index
-      }
+      uri: config.registryUrl.getTask + this.name,
+      resolveWithFullResponse: true,
+      json: true
     });
   }
 

@@ -10,7 +10,7 @@ module.exports = {
     postResult: '' || 'http://localhost:8080/api/postResult.json'
   },
   registryUrl: {
-    getTask: '' || 'http://localhost:8080/registry/getTask.json',
-    addTask: '' || 'http://localhost:8080/registry/postTask.json'
+    getTask: 'https://registry.ifmo.su/api/popTask/' || 'http://localhost:8080/registry/getTask.json',
+    addTask: 'https://registry.ifmo.su/api/pushTask/' || 'http://localhost:8080/registry/postTask.json'
   }
 };

@@ -46,7 +46,7 @@ class NotifyWorker extends BaseWorker {
         request({
           method: 'POST',
           url: config.api.postResult,
-          body: JSON.parse({
+          body: {
             _id: data._id,
             url: data.url,
             lastPing: data.lastPing,
@@ -55,7 +55,8 @@ class NotifyWorker extends BaseWorker {
               sizeContent: data.newOptions.sizeContent,
               delayContent: data.newOptions.delayContent
             }
-          })
+          },
+          json: true
         });
         break;
       case 'other':
