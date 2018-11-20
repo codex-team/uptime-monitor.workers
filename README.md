@@ -15,13 +15,6 @@ Run
 
     ./deploy.sh
 
-When deploying:
-
-    git pull
-    npm run stop:all
-    npm install
-    npm run start:all
-
 View logs
 
     tail -f ~/.forever/logfile.log
