@@ -3,9 +3,10 @@
  */
 
 let BaseWorker = require('../base-worker');
+let config = require('../../config');
 
 /** @constant {number} delay for first worker (each one minute)*/
-const QUANT_TIME = 5000;
+const QUANT_TIME = config.quantTime;
 
 /**
  * Class repesentation a InitWorker

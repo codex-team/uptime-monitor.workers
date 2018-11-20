@@ -6,9 +6,18 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
+    "worker": "./node_modules/.bin/forever start --spinSleepTime 10000 -a -l logfile.log",
+    "initw": "npm run worker -- ./workers/init-worker/",
+    "prerequestw": "npm run worker -- ./workers/prerequest-worker/",
+    "requestw": "npm run worker -- ./workers/request-worker/",
+    "responsew": "npm run worker -- ./workers/response-worker/",
+    "notifyw": "npm run worker -- ./workers/notify-worker/",
+    "start:all": "NODE_ENV=production npm run initw ; npm run prerequestw ; npm run requestw ; npm run responsew ; npm run notifyw",
+    "stop:all": "./node_modules/.bin/forever stopall",
     "dev": "./node_modules/.bin/nodemon index.js --exec \"npm run lint && node\"",
     "lint": "./node_modules/.bin/eslint \"./**/*.js\"",
-    "lint:fix": "./node_modules/.bin/eslint \"./**/*.js\" --fix"
+    "lint:fix": "./node_modules/.bin/eslint \"./**/*.js\" --fix",
+    "static": "./node_modules/.bin/static ./data"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +30,7 @@
   "devDependencies": {
     "eslint": "^5.8.0",
     "eslint-config-codex": "github:codex-team/eslint-config",
+    "node-static": "^0.7.11",
     "nodemon": "^1.18.6"
   }
 }
