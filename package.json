@@ -12,7 +12,7 @@
     "requestw": "npm run worker -- ./workers/request-worker/",
     "responsew": "npm run worker -- ./workers/response-worker/",
     "notifyw": "npm run worker -- ./workers/notify-worker/",
-    "start:all": "NODE_ENV=production npm run initw & npm run prerequestw & npm run requestw & npm run responsew & npm run notifyw",
+    "start:all": "NODE_ENV=production npm run initw ; npm run prerequestw ; npm run requestw ; npm run responsew ; npm run notifyw",
     "stop:all": "./node_modules/.bin/forever stopall",
     "dev": "./node_modules/.bin/nodemon index.js --exec \"npm run lint && node\"",
     "lint": "./node_modules/.bin/eslint \"./**/*.js\"",
