@@ -36,18 +36,18 @@ Run static stub server(for api and\or registry)
 
 Run single worker with stdout
 
-    node ./workers/init-worker
     node ./workers/prerequest-worker
+    node ./workers/request-worker
     ...
 Run single worker with `forever` out in `~/.forever/logfile.log`
 
-    ./node_modules/.bin/forever start --spinSleepTime 10000 -a -l logfile.log ./workers/init-worker
+    ./node_modules/.bin/forever start --spinSleepTime 10000 -a -l logfile.log ./workers/prerequest-worker
 OR
 
-    npm run worker -- ./workers/init-worker
+    npm run worker -- ./workers/prerequest-worker
 
 OR 
 
-    npm run initw
     npm run prerequestw
+    npm run requestw
     ...
