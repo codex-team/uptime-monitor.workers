@@ -13,9 +13,9 @@
 module.exports = {
   quantTime: 60000,
   baseHost: 'localhost',
-  testhookUrl: 'https://notify.bot.ifmo.su/u/CTKV8JSA',
+  testhookUrl: 'https://notify.bot.ifmo.su/u/DDO5JQTW',
   apiUrl: {
-    getAll: '' || 'http://localhost:8080/api/getAll.json',
+    getAll: 'https://api.monitor.ifmo.su/' || 'http://localhost:8080/api/getAll.json',
     postResult: '' || 'http://localhost:8080/api/postResult.json'
   },
   registryUrl: {

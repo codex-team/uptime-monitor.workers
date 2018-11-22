@@ -1,6 +1,7 @@
 [
   {
     "_id": "1",
+    "name": "Project name",
     "url": "http://www.ifmo.ru/ru/",
     "delay": 4000,
     "lastPing": "2018-11-13T09:07:58.899Z",
