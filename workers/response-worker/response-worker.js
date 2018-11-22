@@ -54,7 +54,7 @@ class ResponseWorker extends BaseWorker {
 
     alarmInfo.lastPing = (new Date()).toISOString(); //  @todo
 
-    // HARDCODE
+    // @todo make a more informative processing of the query results
     if (item.newOptions.statusContent !== 200) {
       needAlarm = true;
 

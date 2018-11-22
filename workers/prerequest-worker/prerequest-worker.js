@@ -5,6 +5,7 @@
 const request = require('request-promise');
 let BaseWorker = require('../base-worker');
 let config = require('../../config');
+const getAllQuery = require('../../graphql-api/GetAllProjects.graphql.js');
 
 /** @constant {number} delay for first worker (each one minute)*/
 const QUANT_TIME = config.quantTime;
@@ -30,42 +31,46 @@ class PreRequestWorker extends BaseWorker {
    */
   start() {
     console.log('Worker [0] started');
+
     // Every minute get all projects and create request queue
     setInterval(() => {
       request({
         method: 'POST',
         url: config.apiUrl.getAll,
-        body: { query: 'query GetAllProjects{projects {name, url}}' },
+        body: { query: getAllQuery },
         json: true
       }).then((res) => {
         console.log('Success tick', res);
         if (!res || !res.data || !res.data.projects) {
-          throw new Error('apiUrl getAll return XpeHb');
+          throw new Error('Incompatible data format from API');
         }
 
         res = res.data.projects;
         res.forEach((item) => {
-          if (this._needPingNow(item)) {
-            let newMsg = {
-              _id: item._id || '-1',
-              url: item.url,
-              name: item.name,
-              options: item.options || {},
-              notifications: item.notifications || []
-              // @todo option ARGUMENTS !!!!!
-            };
-
-            this.addTask('RequestWorker', newMsg);
-            // http.post('.../upStatus', {_id: item:_id, status: 'pending'});
-            /** @todo (notCritical)
-             *  в прошлой версии при начале обработки сущности project
-             *  в цепочке воркеров - я выставлял в базу данному документу поле status: 'pending'
-             *  это гарантировало тот факт, что project повторно не будет попадать в очередь
-             *  пока наш квант времени 1 минута - этой проблемы возникать не будет, но как только
-             *  задача будет висеть в очередях дольше этого времени - CRASHED
-             *  как с этим быть сейчас? на чьей стороне это надо предусматривать?
-             */
+          if (!this._needPingNow(item)) {
+            return;
           }
+
+          let newMsg = {
+            // -1 ==> stub data
+            _id: item._id || '-1',
+            url: item.url,
+            name: item.name,
+            options: item.options || {},
+            notifications: item.notifications || []
+            // @todo option ARGUMENTS !!!!!
+          };
+
+          this.addTask('RequestWorker', newMsg);
+          // http.post('.../upStatus', {_id: item:_id, status: 'pending'});
+          /** @todo (notCritical)
+           *  в прошлой версии при начале обработки сущности project
+           *  в цепочке воркеров - я выставлял в базу данному документу поле status: 'pending'
+           *  это гарантировало тот факт, что project повторно не будет попадать в очередь
+           *  пока наш квант времени 1 минута - этой проблемы возникать не будет, но как только
+           *  задача будет висеть в очередях дольше этого времени - CRASHED
+           *  как с этим быть сейчас? на чьей стороне это надо предусматривать?
+           */
         });
       });
     }, QUANT_TIME);
@@ -79,9 +84,10 @@ class PreRequestWorker extends BaseWorker {
    * @returns {boolean}
    */
   _needPingNow(item) {
-    // @todo remove stub
+    // @todo remove data stub stub
     item.lastPing = item.lastPing || new Date(0);
     item.delay = item.delay || 1;
+    // END @todo remove data stub stub
 
     let current = (new Date()).getTime();
     let last = (new Date(item.lastPing)).getTime();
