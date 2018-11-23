@@ -1,0 +1,6 @@
+query GetAllProjects{
+  projects {
+  name,
+    url
+ }
+}

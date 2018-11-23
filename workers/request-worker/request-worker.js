@@ -68,7 +68,7 @@ class RequestWorker extends BaseWorker {
             console.log(_msg.url, res.statusCode, time, body.length, '=======');
 
             _msg.newOptions = {
-              statusContent: 200,
+              statusContent: res.statusCode,
               sizeContent: body.length, // == Buffer.from(body).length
               delayContent: time
             };

@@ -3,9 +3,10 @@
  */
 
 const request = require('request-promise');
+const fs = require('fs');
+const path = require('path');
 let BaseWorker = require('../base-worker');
 let config = require('../../config');
-const getAllQuery = require('../../graphql-api/GetAllProjects.graphql.js');
 
 /** @constant {number} delay for first worker (each one minute)*/
 const QUANT_TIME = config.quantTime;
@@ -30,6 +31,8 @@ class PreRequestWorker extends BaseWorker {
    * @override
    */
   start() {
+    let getAllQuery = fs.readFileSync(path.join(__dirname, '../../graphql-api/GetAllProjects.graphql')).toString();
+
     console.log('Worker [0] started');
 
     // Every minute get all projects and create request queue

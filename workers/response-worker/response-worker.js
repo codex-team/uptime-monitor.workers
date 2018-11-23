@@ -133,15 +133,7 @@ class ResponseWorker extends BaseWorker {
    * @returns {string}
    */
   _generateAlarmMessge(alarmInfo, item) {
-    let str = '\u203C INFO \u203c\n' + item.name + ' ' + item.url + '\n' + alarmInfo.lastPing + '\n';
-
-    Object.keys(alarmInfo).forEach((key) => {
-      if (key != 'lastPing') {
-        str += 'Changed value ' + key + ' from ' + alarmInfo[key].prev + ' to ' + alarmInfo[key].current + '\n';
-      }
-    });
-
-    return str;
+    return alarmInfo['statusContent'].current + ' code on ' + item.url;
   }
 }
 
