@@ -27,8 +27,11 @@
     "request-promise": "^4.2.2"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "eslint": "^5.8.0",
     "eslint-config-codex": "github:codex-team/eslint-config",
+    "mocha": "^5.2.0",
+    "nock": "^10.0.2",
     "node-static": "^0.7.11",
     "nodemon": "^1.18.6"
   }
