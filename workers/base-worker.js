@@ -8,6 +8,65 @@ const crypto = require('crypto');
 let config = require('../config');
 
 /**
+ *  START STUB for api-server, registry-server, notify-endpoint in dev mode
+ */
+
+if (process.env.NODE_ENV == 'development') {
+  const nock = require('nock');
+  let stubData = require('../data/api/getAll.json');
+  let stubTask = require('../data/registry/getTask.json');
+  let utils = require('../utils');
+
+  nock(config.apiUrl.index)
+    .log(console.log)
+    .persist()
+    // @todo postResult to api(notify)
+    .post('/', { query: utils.getSchema('queries/GetAllProjects.graphql') })
+    .delayBody(1000)
+    .reply(200, stubData);
+
+  nock(config.registryUrl.index)
+    .log(console.log)
+    .persist()
+    .get('/api/popTask/RequestWorker')
+    .delayBody(1000)
+    .reply(200, { task: stubTask })
+    .get('/api/popTask/ResponseWorker')
+    .delayBody(1000)
+    .reply(200, { task: stubTask })
+    .get('/api/popTask/NotifyWorker')
+    .delayBody(1000)
+    .reply(200, { task: stubTask })
+    .filteringRequestBody(function (body) {
+      return '*';
+    })
+    .put(/api\/pushTask\/.*/, '*')
+    .delayBody(1000)
+    .reply(200, 'put success');
+
+  nock('http://exapmle.com')
+    .persist()
+    .get('/ok')
+    .reply(200, 'Succes Result')
+    .get('/bad')
+    .reply(502);
+
+  nock(config.testhookUrl)
+    .log(console.log)
+    .persist()
+    .filteringRequestBody(function (body) {
+      return '*';
+    })
+    .post('', '*')
+    .delayBody(1000)
+    .reply(200);
+}
+
+/**
+ *  END STUB
+ */
+
+/**
  *  Class repesentation a BaseWorker
  *  @class BaseWorker
  *  @abstract

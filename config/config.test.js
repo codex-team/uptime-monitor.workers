@@ -11,16 +11,14 @@
  * @property {object} registryUrl.addTask  - url for pushTask to registry
  */
 module.exports = {
-  quantTime: 60000,
+  quantTime: 5000,
   baseHost: 'localhost',
   testhookUrl: 'https://notify.bot.ifmo.su/u/DDO5JQTW',
   apiUrl: {
-    index: 'https://api.monitor.ifmo.su',
-    getAll: 'https://api.monitor.ifmo.su' || 'http://localhost:8080/api/getAll.json',
+    getAll: 'https://api.monitor.ifmo.su/' || 'http://localhost:8080/api/getAll.json',
     postResult: '' || 'http://localhost:8080/api/postResult.json'
   },
   registryUrl: {
-    index: 'https://registry.ifmo.su',
     getTask: 'https://registry.ifmo.su/api/popTask/' || 'http://localhost:8080/registry/getTask.json',
     addTask: 'https://registry.ifmo.su/api/pushTask/' || 'http://localhost:8080/registry/postTask.json'
   }
