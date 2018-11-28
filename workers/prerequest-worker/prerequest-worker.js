@@ -41,7 +41,6 @@ class PreRequestWorker extends BaseWorker {
         body: { query: getAllProjectsQuery },
         json: true
       }).then((res) => {
-        console.log('Success tick', res);
         if (!res || !res.data || !res.data.projects) {
           throw new Error('Incompatible data format from API');
         }
