@@ -5,4 +5,4 @@ out.log
 npm-debug*.log
 sandbox
 workers/*/logfile.log
-logfile.log
+pm2-logfile.log
