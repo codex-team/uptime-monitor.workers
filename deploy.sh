@@ -7,7 +7,7 @@ npm run stop:all
 echo "Get changes from git"
 git pull
 
-npm install
+npm install || (npm cache clear && npm dedupe && npm install)
 
 echo "Start again all workers"
 npm run start:all
