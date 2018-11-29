@@ -42,6 +42,7 @@ class ResponseWorker extends BaseWorker {
     let item = {
       _id: data._id,
       url: data.url,
+      name: data.name,
       options: data.options,
       newOptions: data.newOptions,
       notifications: data.notifications
@@ -53,45 +54,45 @@ class ResponseWorker extends BaseWorker {
 
     alarmInfo.lastPing = (new Date()).toISOString(); //  @todo
 
-    // HARDCODE
-    // if (item.newOptions.statusContent !== 200) {
-    //   needAlarm = true;
-
-    //   alarmInfo['statusContent'] = {
-    //     prev: 200,
-    //     current: item.newOptions.statusContent
-    //   };
-    // }
-
-    // Inspect response status for changes
-    if (item.options.statusContent && item.options.statusContent != item.newOptions.statusContent) {
+    // @todo make a more informative processing of the query results
+    if (item.newOptions.statusContent !== 200) {
       needAlarm = true;
 
       alarmInfo['statusContent'] = {
-        prev: item.options.statusContent,
+        prev: 200,
         current: item.newOptions.statusContent
       };
     }
 
-    // Inspect response size for changes
-    if (item.options.sizeContent && item.options.sizeContent != item.newOptions.sizeContent) {
-      needAlarm = true;
+    // // Inspect response status for changes
+    // if (item.options.statusContent && item.options.statusContent != item.newOptions.statusContent) {
+    //   needAlarm = true;
 
-      alarmInfo['sizeContent'] = {
-        prev: item.options.sizeContent,
-        current: item.newOptions.sizeContent
-      };
-    }
+    //   alarmInfo['statusContent'] = {
+    //     prev: item.options.statusContent,
+    //     current: item.newOptions.statusContent
+    //   };
+    // }
 
-    // Inspect response delay for changes
-    if (item.options.delayContent && item.options.delayContent != item.newOptions.delayContent) {
-      needAlarm = true;
+    // // Inspect response size for changes
+    // if (item.options.sizeContent && item.options.sizeContent != item.newOptions.sizeContent) {
+    //   needAlarm = true;
 
-      alarmInfo['delayContent'] = {
-        prev: item.options.delayContent,
-        current: item.newOptions.delayContent
-      };
-    }
+    //   alarmInfo['sizeContent'] = {
+    //     prev: item.options.sizeContent,
+    //     current: item.newOptions.sizeContent
+    //   };
+    // }
+
+    // // Inspect response delay for changes
+    // if (item.options.delayContent && item.options.delayContent != item.newOptions.delayContent) {
+    //   needAlarm = true;
+
+    //   alarmInfo['delayContent'] = {
+    //     prev: item.options.delayContent,
+    //     current: item.newOptions.delayContent
+    //   };
+    // }
 
     // Send ping result to api(anyway)
     this.addTask('NotifyWorker', {
@@ -101,7 +102,7 @@ class ResponseWorker extends BaseWorker {
 
     // Send notifications, if ping result has changes from prev
     if (needAlarm) {
-      let message = this._generateAlarmMessge(alarmInfo);
+      let message = this._generateAlarmMessge(alarmInfo, item);
 
       // @todo rm hardcode
       item.notifications.push({
@@ -126,18 +127,13 @@ class ResponseWorker extends BaseWorker {
   /**
    * Generate message for notifications
    * @param {object} alarmInfo //  @todo
+   * @param {object} item - object with project data
+   * @param {string} item.url - project url
+   * @param {string} item.name - project name
    * @returns {string}
    */
-  _generateAlarmMessge(alarmInfo) {
-    let str = '\u203C INFO \u203c\n' + alarmInfo.lastPing + '\n';
-
-    Object.keys(alarmInfo).forEach((key) => {
-      if (key != 'lastPing') {
-        str += 'Changed value ' + key + ' from ' + alarmInfo[key].prev + ' to ' + alarmInfo[key].current + '\n';
-      }
-    });
-
-    return str;
+  _generateAlarmMessge(alarmInfo, item) {
+    return alarmInfo['statusContent'].current + ' code on ' + item.url;
   }
 }
 

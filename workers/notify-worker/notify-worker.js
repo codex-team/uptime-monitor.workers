@@ -45,21 +45,21 @@ class NotifyWorker extends BaseWorker {
 
     switch (data.type) {
       case 'api':
-        resultCall = request({
-          method: 'POST',
-          url: config.apiUrl.postResult,
-          body: {
-            _id: data._id,
-            url: data.url,
-            lastPing: data.lastPing,
-            newOptions: {
-              statusContent: data.newOptions && data.newOptions.statusContent,
-              sizeContent: data.newOptions && data.newOptions.sizeContent,
-              delayContent: data.newOptions && data.newOptions.delayContent
-            }
-          },
-          json: true
-        });
+        // resultCall = request({
+        //   method: 'POST',
+        //   url: config.apiUrl.postResult,
+        //   body: {
+        //     _id: data._id,
+        //     url: data.url,
+        //     lastPing: data.lastPing,
+        //     newOptions: {
+        //       statusContent: data.newOptions && data.newOptions.statusContent,
+        //       sizeContent: data.newOptions && data.newOptions.sizeContent,
+        //       delayContent: data.newOptions && data.newOptions.delayContent
+        //     }
+        //   },
+        //   json: true
+        // });
         break;
       case 'testhook':
         resultCall = request({

@@ -27,6 +27,7 @@ class RequestWorker extends BaseWorker {
    * @param {object} data
    * @param {string} data._id - project ID
    * @param {string} data.url - project url
+   * @param {string} data.name - project name
    * @param {object} data.options - project options
    * @param {number} data.options.statusContent
    * @param {number} data.options.sizeContent
@@ -43,6 +44,7 @@ class RequestWorker extends BaseWorker {
       let _msg = {
         _id: data._id,
         url: data.url,
+        name: data.name,
         options: data.options,
         notifications: data.notifications
       };
@@ -66,7 +68,7 @@ class RequestWorker extends BaseWorker {
             console.log(_msg.url, res.statusCode, time, body.length, '=======');
 
             _msg.newOptions = {
-              statusContent: 200,
+              statusContent: res.statusCode,
               sizeContent: body.length, // == Buffer.from(body).length
               delayContent: time
             };
