@@ -42,12 +42,12 @@ Run single worker with stdout
     node ./workers/prerequest-worker
     node ./workers/request-worker
     ...
-Run single worker with `pm2` out in `./pm2-logfile.log`
+Run single worker with `pm2`
 
-    pm2 start -l pm2-logfile.log ./workers/prerequest-worker
-OR
+    pm2 start prerequest
+    pm2 start request
+    ...
 
-    npm run worker -- ./workers/prerequest-worker
 
 OR 
 
