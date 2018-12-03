@@ -27,30 +27,36 @@ class BaseWorker {
   /**
    * Wrapper for starting each worker
    */
-  start() {
+  async start() {
     console.log('Worker ' + this.name + ' started');
-    this.popTask()
-      .then((data) => {
-        console.log('task given');
-        if (data.statusCode == 200 && data.body['task']) {
-          return this.operate(data.body.task);
-        }
 
-        return new Promise((resolve, reject) => {
-          if (data.statusCode >= 500) {
-            reject(new Error('Error with registry'));
-          } else {
-            resolve();
+    let promise, result;
+
+    while (true) {
+      console.log('tick');
+      promise = this.popTask()
+        .then((data) => {
+          console.log('task given');
+          if (data.statusCode == 200 && data.body['task']) {
+            return this.operate(data.body.task);
           }
+
+          return new Promise((resolve, reject) => {
+            if (data.statusCode >= 500) {
+              reject(new Error('Error with registry'));
+            } else {
+              resolve();
+            }
+          });
         });
-      })
-      .then(() => {
-        this.start(); // recursion
-      })
-      .catch((err) => {
-        this.start(); // try again
+
+      try {
+        result = await promise;
+        console.log(result);
+      } catch (err) {
         console.log('smth went wrong', err, 'BASE ERRORHANDLER');
-      });
+      }
+    }
   }
 
   /**

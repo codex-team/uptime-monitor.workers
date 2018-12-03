@@ -39,7 +39,7 @@ class NotifyWorker extends BaseWorker {
    * @param {string} data.lastPing - last ping ISO time
    */
   operate(data) {
-    let resultCall;
+    let resultCall = null;
 
     console.log('dooing task = ' + data.type);
 
