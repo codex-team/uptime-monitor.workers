@@ -6,3 +6,4 @@ npm-debug*.log
 sandbox
 workers/*/logfile.log
 pm2-logfile.log
+pm2-logfile-single.log
