@@ -48,6 +48,9 @@ class BaseWorker {
               resolve();
             }
           });
+        })
+        .catch((err) => {
+          console.log(err, 'smth went wrong with REGISTRY');
         });
 
       try {
@@ -72,6 +75,8 @@ class BaseWorker {
       body: options,
       json: true,
       resolveWithFullResponse: true
+    }).catch(err => {
+      console.log(err, 'Error adding task to registry from ' + this.name);
     });
   }
 
