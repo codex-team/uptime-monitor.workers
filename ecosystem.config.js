@@ -5,8 +5,6 @@ module.exports = {
       name: 'prerequest',
       script: './workers/prerequest-worker/index.js',
       log: 'pm2-logfile.log',
-      autorestart: true,
-      watch: true,
       env: {
         NODE_ENV: 'development'
       },
@@ -18,8 +16,6 @@ module.exports = {
       name: 'request',
       script: './workers/request-worker/index.js',
       log: 'pm2-logfile.log',
-      autorestart: true,
-      watch: true,
       env: {
         NODE_ENV: 'development'
       },
@@ -31,8 +27,6 @@ module.exports = {
       name: 'response',
       script: './workers/response-worker/index.js',
       log: 'pm2-logfile.log',
-      autorestart: true,
-      watch: true,
       env: {
         NODE_ENV: 'development'
       },
@@ -44,8 +38,6 @@ module.exports = {
       name: 'notify',
       script: './workers/notify-worker/index.js',
       log: 'pm2-logfile.log',
-      autorestart: true,
-      watch: true,
       env: {
         NODE_ENV: 'development'
       },
