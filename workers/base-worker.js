@@ -3,9 +3,10 @@
  * @author dyadyaJora
  */
 
-const request = require('request-promise');
+const Socket = require('net').Socket;
 const crypto = require('crypto');
 let config = require('../config');
+let utils = require('../utils');
 
 /**
  *  Class repesentation a BaseWorker
@@ -22,74 +23,58 @@ class BaseWorker {
   constructor(name) {
     this.name = name || null;
     this.hash = this._generateHash();
+
+    this.socket = new Socket();
+    this.socket.connect(config.socketPort, config.socketHost);
+
+    this.socket.on('error', () => {
+      console.log('socket error');
+
+      // try connect again or another catcher
+    });
   }
 
   /**
    * Wrapper for starting each worker
    */
-  async start() {
+  start() {
     console.log('Worker ' + this.name + ' started');
 
-    let promise, result;
+    this.socket.on('data', (data) => {
+      console.log('task given');
+      data = utils.jsonFromBuffer(data);
 
-    while (true) {
-      console.log('tick');
-      promise = this.popTask()
-        .then((data) => {
-          console.log('task given');
-          if (data.statusCode == 200 && data.body['task']) {
-            return this.operate(data.body.task);
-          }
-
-          return new Promise((resolve, reject) => {
-            if (data.statusCode >= 500) {
-              reject(new Error('Error with registry'));
-            } else {
-              resolve();
-            }
-          });
+      this.operate(data)
+        .then(() => {
+          this.freeTask(this.name);
         })
         .catch((err) => {
-          console.log(err, 'smth went wrong with REGISTRY');
+          console.log(err, 'ERROR when operating task');
         });
-
-      try {
-        result = await promise;
-        console.log(result);
-      } catch (err) {
-        console.log('smth went wrong', err, 'BASE ERRORHANDLER');
-      }
-    }
+    });
   }
 
   /**
-   * Call api for adding task in queue
+   * Call socket api for adding task in queue
    * @param {string} worker - worker name
    * @param {object} options
+   * @returns {boolean}
    */
   addTask(worker, options) {
     console.log('REQUEST from worker' + worker + ', with options ' + JSON.stringify(options));
-    request({
-      method: 'PUT',
-      uri: config.registryUrl.addTask + worker,
-      body: options,
-      json: true,
-      resolveWithFullResponse: true
-    }).catch(err => {
-      console.log(err, 'Error adding task to registry from ' + this.name);
-    });
+    let buf = utils.jsonToBuffer({worker: worker, options: options});
+
+    return this.socket.write(buf);
   }
 
   /**
-   * Call api for pop task from queue
-   * @param {object} options
+   * Send socket alarm about completing task
+   * @params {string} worker - worker name
    */
-  popTask(options) {
-    return request({
-      uri: config.registryUrl.getTask + this.name,
-      resolveWithFullResponse: true,
-      json: true
-    });
+  freeTask(worker) {
+    let buf = utils.jsonToBuffer({worker: worker, isFree: true});
+
+    return this.socket.write(buf);
   }
 
   /**

@@ -13,6 +13,8 @@
 module.exports = {
   quantTime: 60000,
   baseHost: 'localhost',
+  socketPort: 8125,
+  socketHost: 'localhost',
   testhookUrl: 'https://notify.bot.ifmo.su/u/DDO5JQTW',
   apiUrl: {
     getAll: 'https://api.monitor.ifmo.su/' || 'http://localhost:8080/api/getAll.json',
