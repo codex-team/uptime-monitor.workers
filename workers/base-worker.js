@@ -25,13 +25,6 @@ class BaseWorker {
     this.hash = this._generateHash();
 
     this.socket = new Socket();
-    this.socket.connect(config.socketPort, config.socketHost);
-
-    this.socket.on('error', () => {
-      console.log('socket error');
-
-      // try connect again or another catcher
-    });
   }
 
   /**
@@ -40,17 +33,37 @@ class BaseWorker {
   start() {
     console.log('Worker ' + this.name + ' started');
 
+    this.socket.connect(config.socketPort, config.socketHost, () => {
+      this.sendInit();
+    });
+
     this.socket.on('data', (data) => {
       console.log('task given');
       data = utils.jsonFromBuffer(data);
 
-      this.operate(data)
-        .then(() => {
-          this.freeTask(this.name);
-        })
-        .catch((err) => {
-          console.log(err, 'ERROR when operating task');
-        });
+      if (!data || !data.type) {
+        return;
+      }
+
+      if (data.type == 'INIT') {
+        console.log('connected successfuly');
+      }
+
+      if (data.type == 'POP_TASK') {
+        this.operate(data)
+          .then(() => {
+            this.freeTask(this.name);
+          })
+          .catch((err) => {
+            console.log(err, 'ERROR when operating task');
+          });
+      }
+    });
+
+    this.socket.on('error', () => {
+      console.log('socket error');
+
+      // try connect again or another catcher
     });
   }
 
@@ -73,6 +86,16 @@ class BaseWorker {
    */
   freeTask(worker) {
     let buf = utils.jsonToBuffer({worker: worker, isFree: true});
+
+    return this.socket.write(buf);
+  }
+
+  /**
+   * Send init message
+   * @params {string} worker - worker name
+   */
+  sendInit(worker) {
+    let buf = utils.jsonToBuffer({type: 'INIT', message: { room: this.name, id: this.hash }});
 
     return this.socket.write(buf);
   }

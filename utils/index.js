@@ -15,20 +15,36 @@ module.exports = {
    * Convert buffer data to JSON
    * (for sockets)
    * @param {Buffer} message in buffer view
-   * @returns {object}
+   * @returns {object|null}
    */
   jsonFromBuffer: function (buff) {
-    return JSON.parse(buff.toString());
+    let result;
+
+    try {
+      result = JSON.parse(buff.toString());
+    } catch (err) {
+      result = null;
+    }
+
+    return result;
   },
 
   /**
    * Convert JSON to buffer data
    * (for sockets)
    * @param {object} JSON message
-   * @returns {Buffer}
+   * @returns {Buffer|null}
    */
   jsonToBuffer: function (obj) {
-    return Buffer.from(JSON.stringify(obj));
+    let result;
+
+    try {
+      result = Buffer.from(JSON.stringify(obj));
+    } catch (err) {
+      result = null;
+    }
+
+    return result;
   }
 
 };
