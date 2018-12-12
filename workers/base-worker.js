@@ -33,7 +33,9 @@ class BaseWorker {
   start() {
     console.log('Worker ' + this.name + ' started');
 
-    this.socket.connect(config.socketPort, config.socketHost, () => {
+    this.socket.connect(config.socketPort, config.socketHost);
+
+    this.socket.on('ready', () => {
       this.sendInit();
     });
 
@@ -50,7 +52,7 @@ class BaseWorker {
       }
 
       if (data.type == 'POP_TASK') {
-        this.operate(data)
+        this.operate(data.message.task)
           .then(() => {
             this.freeTask(this.name);
           })
@@ -75,9 +77,9 @@ class BaseWorker {
    */
   addTask(worker, options) {
     console.log('REQUEST from worker' + worker + ', with options ' + JSON.stringify(options));
-    let buf = utils.jsonToBuffer({worker: worker, options: options});
+    let buf = utils.jsonToBuffer({type: 'ADD_TASK', message: { worker: worker, task: options }});
 
-    return this.socket.write(buf);
+    this.socket.write(buf);
   }
 
   /**
@@ -85,9 +87,9 @@ class BaseWorker {
    * @params {string} worker - worker name
    */
   freeTask(worker) {
-    let buf = utils.jsonToBuffer({worker: worker, isFree: true});
+    let buf = utils.jsonToBuffer({type: 'FREE', message: { worker: this.name, id: this.hash }});
 
-    return this.socket.write(buf);
+    this.socket.write(buf);
   }
 
   /**
@@ -97,7 +99,7 @@ class BaseWorker {
   sendInit(worker) {
     let buf = utils.jsonToBuffer({type: 'INIT', message: { room: this.name, id: this.hash }});
 
-    return this.socket.write(buf);
+    this.socket.write(buf);
   }
 
   /**

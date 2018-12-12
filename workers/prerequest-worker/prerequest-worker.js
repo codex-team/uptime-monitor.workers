@@ -30,7 +30,7 @@ class PreRequestWorker extends BaseWorker {
    * Check lastPing time and current time. Generate queue for request
    * @override
    */
-  start() {
+  operate() {
     console.log('Worker [0] started');
 
     // Every minute get all projects and create request queue
