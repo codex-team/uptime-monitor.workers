@@ -85,7 +85,7 @@ class PreRequestWorker extends BaseWorker {
    */
   sendInit(worker) {
     let buf = utils.jsonToBuffer({type: 'INIT', message: { room: this.name, id: this.hash, singleton: true }});
-    console.log(buf, 'sending');
+
     this.socket.write(buf);
   }
 

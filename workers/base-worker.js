@@ -33,13 +33,8 @@ class BaseWorker {
   start() {
     console.log('Worker ' + this.name + ' started');
     this.socket.connect(config.socketPort, config.socketHost);
-    
-    this.socket.on('connect', () => {
-      console.log('connected');
-    });
 
     this.socket.on('ready', () => {
-      console.log('ready');
       this.sendInit();
     });
 
@@ -102,7 +97,7 @@ class BaseWorker {
    */
   sendInit(worker) {
     let buf = utils.jsonToBuffer({type: 'INIT', message: { room: this.name, id: this.hash }});
-    console.log(buf, 'sending');
+
     this.socket.write(buf);
   }
 
