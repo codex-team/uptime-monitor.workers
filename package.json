@@ -6,13 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "worker": "./node_modules/.bin/forever start --spinSleepTime 10000 -a -l logfile.log",
-    "prerequestw": "npm run worker -- ./workers/prerequest-worker/",
-    "requestw": "npm run worker -- ./workers/request-worker/",
-    "responsew": "npm run worker -- ./workers/response-worker/",
-    "notifyw": "npm run worker -- ./workers/notify-worker/",
-    "start:all": "NODE_ENV=production npm run prerequestw ; npm run requestw ; npm run responsew ; npm run notifyw",
-    "stop:all": "./node_modules/.bin/forever stopall",
+    "prew": "pm2 start prerequest --env development",
+    "requestw": "pm2 start request --env development",
+    "responsew": "pm2 start response --env development",
+    "notifyw": "pm2 start notify --env development",
+    "start:all": "pm2 start ecosystem.config.js --env production",
+    "stop:all": "pm2 stop all",
     "dev": "./node_modules/.bin/nodemon index.js --exec \"npm run lint && node\"",
     "lint": "./node_modules/.bin/eslint \"./**/*.js\"",
     "lint:fix": "./node_modules/.bin/eslint \"./**/*.js\" --fix",
@@ -21,8 +20,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "amqplib": "^0.5.2",
-    "forever": "^0.15.3",
     "request": "^2.88.0",
     "request-promise": "^4.2.2"
   },

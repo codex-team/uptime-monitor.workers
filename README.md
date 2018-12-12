@@ -5,6 +5,9 @@
 
 Need:
 - NodeJS >= 10
+- pm2
+
+    npm install -g pm2
 
 ### Start in production:
 
@@ -17,7 +20,7 @@ Run
 
 View logs
 
-    tail -f ~/.forever/logfile.log
+    tail -f ./pm2-logfile.log
 
 ### Run in development
 Up deps
@@ -39,15 +42,15 @@ Run single worker with stdout
     node ./workers/prerequest-worker
     node ./workers/request-worker
     ...
-Run single worker with `forever` out in `~/.forever/logfile.log`
+Run single worker with `pm2`
 
-    ./node_modules/.bin/forever start --spinSleepTime 10000 -a -l logfile.log ./workers/prerequest-worker
-OR
+    pm2 start prerequest
+    pm2 start request
+    ...
 
-    npm run worker -- ./workers/prerequest-worker
 
 OR 
 
-    npm run prerequestw
+    npm run prew
     npm run requestw
     ...

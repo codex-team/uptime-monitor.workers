@@ -1,13 +1,19 @@
 #!/bin/bash
 echo "Starting deploy..."
 
+echo "======================================================"
+echo "** WARNING!!!                                       **"
+echo "Dont forget to update config.prod.js if it is necessary"
+echo "======================================================"
+
 echo "Stop all workers"
 npm run stop:all
 
 echo "Get changes from git"
 git pull
 
-npm install
+echo "Update packages"
+npm install || (npm cache clear && npm dedupe && npm install)
 
 echo "Start again all workers"
-npm run start:all
+pm2 reload ecosystem.config.js --env production
