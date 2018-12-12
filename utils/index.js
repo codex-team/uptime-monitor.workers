@@ -39,7 +39,7 @@ module.exports = {
     let result;
 
     try {
-      result = Buffer.from(JSON.stringify(obj));
+      result = Buffer.from(JSON.stringify(obj) + ',');
     } catch (err) {
       result = null;
     }

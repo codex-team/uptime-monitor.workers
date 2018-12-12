@@ -74,6 +74,19 @@ class PreRequestWorker extends BaseWorker {
         });
       });
     }, QUANT_TIME);
+
+    // костыль, но так надо
+    return new Promise((resolve, reject) => {});
+  }
+
+  /**
+   * Send init message
+   * @params {string} worker - worker name
+   */
+  sendInit(worker) {
+    let buf = utils.jsonToBuffer({type: 'INIT', message: { room: this.name, id: this.hash, singleton: true }});
+    console.log(buf, 'sending');
+    this.socket.write(buf);
   }
 
   /**

@@ -32,10 +32,14 @@ class BaseWorker {
    */
   start() {
     console.log('Worker ' + this.name + ' started');
-
     this.socket.connect(config.socketPort, config.socketHost);
+    
+    this.socket.on('connect', () => {
+      console.log('connected');
+    });
 
     this.socket.on('ready', () => {
+      console.log('ready');
       this.sendInit();
     });
 
@@ -62,8 +66,8 @@ class BaseWorker {
       }
     });
 
-    this.socket.on('error', () => {
-      console.log('socket error');
+    this.socket.on('error', (err) => {
+      console.log('socket error', err);
 
       // try connect again or another catcher
     });
@@ -98,7 +102,7 @@ class BaseWorker {
    */
   sendInit(worker) {
     let buf = utils.jsonToBuffer({type: 'INIT', message: { room: this.name, id: this.hash }});
-
+    console.log(buf, 'sending');
     this.socket.write(buf);
   }
 

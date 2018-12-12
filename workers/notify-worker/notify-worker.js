@@ -39,7 +39,7 @@ class NotifyWorker extends BaseWorker {
    * @param {string} data.lastPing - last ping ISO time
    */
   operate(data) {
-    let resultCall = null;
+    let resultCall = new Promise((resolve, reject) => { resolve(); });
 
     console.log('dooing task = ' + data.type);
 
@@ -73,6 +73,7 @@ class NotifyWorker extends BaseWorker {
       case 'other':
         break;
     }
+
     return resultCall;
   }
 }
